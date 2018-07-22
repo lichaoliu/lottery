@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="recoverCouponJob" class="com.lottery.scheduler.RecoverCouponJob">
+	   <property name="name" value="回收优惠券"></property>
+	</bean>
+	<bean id="recoverCouponTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="recoverCouponJob" />
+		</property>
+		<property name="targetMethod">
+			<value>run</value>
+		</property>
+	</bean>
+	<bean id="recoverCouponTimer" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="recoverCouponTask" />
+		</property>
+		<property name="cronExpression">
+			<value>0 10 0 * * ?</value>
+		</property>
+	</bean>
+</beans>

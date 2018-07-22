@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="notifyLogbackConfig.xml"/>
+	<include resource="systemLogback.xml"/>
+	<include resource="b2bLogback.xml"/>
+	<appender name="commonfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/common.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/common-%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<!-- 充值日志 -->
+	<appender name="payfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/pay/pay.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/pay/pay-%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="com.lottery.pay" additivity="false" level="${logger.level}">
+		<appender-ref ref="payfile"/>
+	</logger>
+    <logger name="com.lottery.controller.pay" additivity="false" level="${logger.level}">
+		<appender-ref ref="payfile"/>
+	</logger>
+
+	<!-- retry 日志 -->
+
+	<appender name="retryfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/retry.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/retry-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<logger name="com.lottery.retrymodel" additivity="false" level="${logger.level}">
+		<appender-ref ref="retryfile"/>
+	</logger>
+
+
+	<!-- 送票日志 -->
+	<appender name="ticketfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/ticket/ticket.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/ticket/ticket-%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<logger name="com.lottery.ticket.sender" additivity="false" level="${logger.level}">
+		<appender-ref ref="ticketfile"/>
+	</logger>
+	<!-- 检票日志 -->
+
+	<logger name="com.lottery.ticket.checker" additivity="false" level="${logger.level}">
+		<appender-ref ref="ticketfile"/>
+	</logger>
+	<logger name="com.lottery.ticket.processor" additivity="false" level="${logger.level}">
+		<appender-ref ref="ticketfile"/>
+	</logger>
+		<!-- 分票日志 -->
+	
+	<logger name="com.lottery.ticket.allotter" additivity="false" level="${logger.level}">
+		<appender-ref ref="ticketfile"/>
+	</logger>
+	
+	<!-- 新期日志 -->
+	<appender name="phasefile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/phase/newphase.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/phase/newphase-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+
+	<logger name="com.lottery.ticket.phase" additivity="false" level="${logger.level}">
+		<appender-ref ref="phasefile"/>
+	</logger>
+	<!-- 抓取日志 -->
+	<appender name="processfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/phase/process.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/phase/process-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<logger name="com.lottery.ticket.vender.process" additivity="false" level="${logger.level}">
+		<appender-ref ref="processfile"/>
+	</logger>
+	
+   <!-- 中奖日志 -->
+	<appender name="phasedraw" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/phase/phasedraw.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/phase/phasedraw-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="com.lottery.draw" additivity="false" level="${logger.level}">
+		<appender-ref ref="phasedraw"/>
+	</logger>
+	<logger name="com.lottery.ticket.vender" additivity="false" level="${logger.level}">
+		<appender-ref ref="phasedraw"/>
+	</logger>
+
+	
+	<!-- listener -->
+	<appender name="listenerfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/lottery/listener/listener.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>  
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/lottery/listener/listener-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="com.lottery.listener" additivity="false" level="info">
+		<appender-ref ref="listenerfile"/>
+	</logger>
+	
+	<!-- 临时日志 -->
+	
+	<appender name="temporaryfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/temporary_lottery.log</File>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/temporary_lottery-log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>1</maxHistory>
+			
+		</rollingPolicy>
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+	      <fileNamePattern>daily_bak.%i.log.zip</fileNamePattern>
+	      <minIndex>1</minIndex>
+	      <maxIndex>2</maxIndex>
+	    </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		      <maxFileSize>10MB</maxFileSize>
+		 </triggeringPolicy>
+         
+		
+	</appender>
+	
+	<logger name="com.lottery.core.terminal" additivity="false" level="info">
+		<appender-ref ref="temporaryfile"/>
+	</logger>
+
+    <!-- 定时任务-->
+    <appender name="schedulerfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.home}/logs/lottery/phase/scheduler.log</File>
+        <encoder>
+            <pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.home}/logs/lottery/phase/scheduler-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <logger name="com.lottery.scheduler" additivity="false" level="${logger.level}">
+        <appender-ref ref="schedulerfile"/>
+    </logger>
+
+	<!-- 所有的日志 -->
+	<logger name="com.lottery" additivity="false" level="${logger.level}">
+		<appender-ref ref="commonfile"/>
+	</logger>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	    <encoder>
+	      <pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+	      <charset>UTF-8</charset>  
+	    </encoder>
+	</appender>
+	<!-- 启动日志 -->
+<!-- <appender name="startFile" class="ch.qos.logback.core.FileAppender">    
+    <file>${catalina.home}/logs/startUp.log</file>    
+    <append>true</append>    
+    <encoder>    
+      <pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>    
+    </encoder>    
+  </appender> 
+   <logger name="org.springframework" level="ERROR">
+      <appender-ref ref="startFile"/>
+    </logger> -->
+    
+    
+
+		
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

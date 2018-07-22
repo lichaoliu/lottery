@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 单场新期，赛程 -->
+    
+    <bean id="dcPhaseRunnable" class="com.lottery.ticket.phase.thread.AsyncDcPhaseRunnable">
+        <property name="lotteryType" ref="dc_spf"></property>
+        <!-- <property name="internalDcService">
+         <bean class="com.lottery.ticket.vender.process.huay.HuayInternalDcService"></bean>
+        </property>
+         -->
+         <property name="internalDcService">
+         <bean class="com.lottery.ticket.vender.process.gaode.GaoDeDcService"></bean>
+        </property>
+    </bean>
+    <bean id="dcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="dcPhaseRunnable" />
+        <constructor-arg index="1" value="单场彩期及赛程" />
+        <property name="beforeRunWaitTime" value="15000" />
+    </bean>
+    
+    
+</beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" >
+
+	<context:component-scan base-package="com.lottery.listener.caselot" >
+	</context:component-scan>
+	<context:component-scan base-package="com.lottery.listener.chase" >
+	</context:component-scan>
+
+
+	<!-- 合买监听 -->
+	<bean id="caseLotBuilderRoute" class="com.lottery.listener.caselot.CaseLotRouteBuilder"></bean>
+	<camelContext id="caseLotCamelContext" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="caseLotBuilderRoute"/>
+	</camelContext>
+
+
+	<bean id="caseLotEndRunnable" class="com.lottery.ticket.caselot.thread.LotteryCaseLotEndCheckerRunnable">
+	</bean>
+	<bean id="caseLotEndContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		<constructor-arg index="0" ref="caseLotEndRunnable" />
+		<constructor-arg index="1" value="合买期结线程" />
+		<property name="beforeRunWaitTime" value="13000" />
+	</bean>
+
+
+	<!-- 追号监听 -->
+
+	<bean id="chaseBuilderRoute" class="com.lottery.listener.chase.LotteryChaseRouteBuilder"></bean>
+	<camelContext id="chaseCamelContext" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="chaseBuilderRoute"/>
+	</camelContext>
+
+	<bean id="chaseEndRunnable" class="com.lottery.listener.chase.LotteryChaseRunnable"/>
+	<bean id="chaseEndContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		<constructor-arg index="0" ref="chaseEndRunnable" />
+		<constructor-arg index="1" value="追号处理线程" />
+		<property name="beforeRunWaitTime" value="13000" />
+	</bean>
+
+
+
+
+
+  </beans>

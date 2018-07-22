@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 足彩新期 AsyncZcPhaseRunnable -->
+    <bean id="zcPhaseRunnable" class="com.lottery.ticket.phase.thread.AsyncZcPhaseRunnable">
+        <property name="invitl" value="180000"/>
+
+    </bean>
+  <bean id="zcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcPhaseRunnable" />
+        <constructor-arg index="1" value="足彩彩期抓取" />
+        <property name="beforeRunWaitTime" value="15000" />
+    </bean>
+
+    <!-- 足彩开奖-->
+
+
+    <bean id="zcResultRunnable" class="com.lottery.ticket.phase.thread.ZcRaceResultRunnable">
+        <property name="interval" value="180000"/>
+
+    </bean>
+    <bean id="zcResultContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcResultRunnable" />
+        <constructor-arg index="1" value="足彩赛果抓取" />
+        <property name="beforeRunWaitTime" value="15000" />
+    </bean>
+    
+    
+    <bean id="zcSfcPhaseRunnable" class="com.lottery.ticket.phase.thread.impl.CommonPhaseHandler">
+         <property name="lotteryType" ref="zc_sfc"></property>
+    </bean>
+    <bean id="zcSfcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcSfcPhaseRunnable" />
+        <constructor-arg index="1" value="足彩胜负14场新期" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+    
+    <bean id="zcRjcPhaseRunnable" class="com.lottery.ticket.phase.thread.impl.CommonPhaseHandler">
+         <property name="lotteryType" ref="zc_rjc"></property>
+    </bean>
+    <bean id="zcRjcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcRjcPhaseRunnable"/>
+        <constructor-arg index="1" value="足彩任九场新期" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+    
+     <bean id="zcJqcPhaseRunnable" class="com.lottery.ticket.phase.thread.impl.CommonPhaseHandler">
+         <property name="lotteryType" ref="zc_jqc"></property>
+    </bean>
+    <bean id="zcJqcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcJqcPhaseRunnable" />
+        <constructor-arg index="1" value="足彩四场进球新期" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+    
+    <bean id="zcBqcPhaseRunnable" class="com.lottery.ticket.phase.thread.impl.CommonPhaseHandler">
+         <property name="lotteryType" ref="zc_bqc"></property>
+    </bean>
+    <bean id="zcBqcPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="zcBqcPhaseRunnable" />
+        <constructor-arg index="1" value="足彩六场半全场新期" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+</beans>
