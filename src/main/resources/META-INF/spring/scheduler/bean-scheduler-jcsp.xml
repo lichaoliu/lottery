@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="getSpFromJob" class="com.lottery.scheduler.fetcher.sp.GetJcSpTimer">
+	   <property name="name" value="竞彩sp抓取"></property>
+	   <property name="iGetSpData">
+	    	<bean class="com.lottery.scheduler.fetcher.sp.jingcaidata.GetSpFromJingcaidata"></bean>
+	   </property>
+	   <!--
+	   <property name="terminalType" ref="zch"></property>
+	   <property name="iGetSpData">
+	    <bean class="com.lottery.scheduler.fetcher.sp.zch.GetSpFromZch"></bean>
+	   </property>
+		-->
+	</bean>
+	
+	<bean id="getSpFromtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="getSpFromJob" />
+		</property>
+		<property name="targetMethod">
+			<value>run</value>
+		</property>
+	</bean>
+	
+	<bean id="jcspTimer" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="getSpFromtask" />
+		</property>
+		<property name="cronExpression">
+			<value>0/30 * * * * ?</value>
+		</property>
+		<property name="startDelay" value="240000" />
+	</bean>
+
+</beans>

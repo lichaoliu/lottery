@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" >
+
+ 
+	    
+
+	     <bean id="caidaogaopinOrderCheckerRunnable" class="com.lottery.ticket.checker.thread.CommonticketCheckerRunnable">
+			 <property name="specialLotteryTypeList">
+
+				 <list>
+					<ref bean="sd11x5"/>
+					<ref bean="gd11x5"/>
+					<ref bean="sdklpk3"/>
+				 </list>
+			 </property>
+			 <property name="interval" value="3000"/>
+	        <property name="terminalType" ref="zy"/>
+	    </bean>
+	    
+	   
+	     <bean id="caidaogaopinCheckerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		    <constructor-arg index="0" ref="caidaogaopinOrderCheckerRunnable" />
+			<constructor-arg index="1" value="彩岛高频查票线程" />
+			<property name="beforeRunWaitTime" value="10000" />
+	    </bean>
+
+
+
+	<bean id="caidaoOrderCheckerRunnable" class="com.lottery.ticket.checker.thread.CommonticketCheckerRunnable">
+		<property name="excludeLotteryTypeList">
+			<list>
+				<ref bean="sd11x5"/>
+				<ref bean="sdklpk3"/>
+			</list>
+		</property>
+		<property name="terminalType" ref="zy"/>
+	</bean>
+
+
+
+
+
+	<bean id="caidaoCheckerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		<constructor-arg index="0" ref="caidaoOrderCheckerRunnable" />
+		<constructor-arg index="1" value="彩岛检票线程" />
+		<property name="beforeRunWaitTime" value="10000" />
+	</bean>
+	   
+</beans>

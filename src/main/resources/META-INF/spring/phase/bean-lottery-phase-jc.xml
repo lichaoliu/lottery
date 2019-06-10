@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 竞彩足球彩，赛程回收 -->
+    
+    <bean id="jczqPhaseRunnable" class="com.lottery.ticket.phase.thread.AsyncJczqPhaseRunnable">
+        <property name="lotteryType" ref="jczq_spf"></property>
+    </bean>
+    <bean id="jczqPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="jczqPhaseRunnable" />
+        <constructor-arg index="1" value="竞彩足球彩期赛程切换线程" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+    
+    <!-- 竞彩篮球，赛程 -->
+       <bean id="jclqPhaseRunnable" class="com.lottery.ticket.phase.thread.AsyncJclqPhaseRunnable">
+        <property name="lotteryType" ref="jclq_sf"></property>
+    </bean>
+    <bean id="jclqPhaseContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="jclqPhaseRunnable" />
+        <constructor-arg index="1" value="竞彩篮球彩期赛程切换线程" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+</beans>

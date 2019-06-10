@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 竞彩足球 定时算奖 -->
+    
+    <bean id="jczqPhaseDrawTimerRunnable" class="com.lottery.ticket.phase.drawtime.impl.JczqPhaseDrawTimer">
+        <property name="lotteryType" ref="jczq_spf"></property>
+    </bean>
+    <bean id="jczqPhaseDrawTimerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start"  destroy-method="stop">
+        <constructor-arg index="0" ref="jczqPhaseDrawTimerRunnable" />
+        <constructor-arg index="1" value="竞彩足球定时算奖线程" />
+        <property name="beforeRunWaitTime" value="12000" />
+    </bean>
+    
+    <!-- 竞彩篮球，定时算奖 -->
+    <bean id="jclqPhaseDrawTimerRunnable" class="com.lottery.ticket.phase.drawtime.impl.JclqPhaseDrawTimer">
+        <property name="lotteryType" ref="jclq_sf"></property>
+    </bean>
+    <bean id="jclqPhaseDrawTimerContainer" class="com.lottery.common.thread.ThreadContainer"  init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="jclqPhaseDrawTimerRunnable" />
+        <constructor-arg index="1" value="竞彩篮球定时算奖线程" />
+        <property name="beforeRunWaitTime" value="11000" />
+    </bean>
+    <!-- 单场定时算奖 -->
+    <bean id="dcPhaseDrawTimerRunnable" class="com.lottery.ticket.phase.drawtime.impl.DcPhaseDrawTimer">
+        <property name="lotteryType" ref="dc_spf"></property>
+    </bean>
+
+
+    <!--<bean id="dcPhaseDrawTimerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start"  destroy-method="stop">-->
+        <!--<constructor-arg index="0" ref="dcPhaseDrawTimerRunnable" />-->
+        <!--<constructor-arg index="1" value="单场定时算奖线程" />-->
+        <!--<property name="beforeRunWaitTime" value="12000" />-->
+    <!--</bean>-->
+    <!---->
+    <!---->
+    <!-- 单场胜负过关 -->
+
+    <bean id="dcsfggPhaseDrawTimerRunnable" class="com.lottery.ticket.phase.drawtime.impl.DcPhaseDrawTimer">
+        <property name="lotteryType" ref="dc_sfgg"></property>
+    </bean>
+
+
+    <!--<bean id="dcsfggPhaseDrawTimerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start"  destroy-method="stop">-->
+    <!--<constructor-arg index="0" ref="dcsfggPhaseDrawTimerRunnable" />-->
+    <!--<constructor-arg index="1" value="单场胜负过关定时算奖线程" />-->
+    <!--<property name="beforeRunWaitTime" value="12000" />-->
+    <!--</bean>-->
+</beans>

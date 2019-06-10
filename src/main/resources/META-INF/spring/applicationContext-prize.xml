@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" >
+
+	
+    <context:component-scan base-package="com.lottery.listener.prize"/>
+
+
+    <bean id="phasePrizeOpenRoute" class="com.lottery.listener.prize.PhaseOpenPrizeRouteBuilder">
+
+    </bean>
+    <camelContext id="phasePrizeOpenCamelContenxt" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="phasePrizeOpenRoute"/>
+    </camelContext>
+
+    <!-- 订单开奖 -->
+    <bean id="orderDrawRouteBuilder" class="com.lottery.listener.prize.OrderDrawRouteBuilder"/>
+    <camelContext id="orderdrawCamelContenxt" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="orderDrawRouteBuilder"/>
+    </camelContext>
+
+
+    <!--高频算奖 -->
+    <bean id="gaopinOrderDrawRouteBuilder" class="com.lottery.listener.prize.GaopinOrderDrawRouteBuilder"/>
+    <camelContext id="gaopinOrderdrawCamelContenxt" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="gaopinOrderDrawRouteBuilder"/>
+    </camelContext>
+
+    <!--票算奖-->
+
+    <bean id="ticketPrizeRouteBuilder" class="com.lottery.listener.prize.TicketPrizeRouteBuilder"/>
+    <camelContext id="ticketPrizeCamelContenxt" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="ticketPrizeRouteBuilder"/>
+    </camelContext>
+
+
+    <!--普通彩种算奖回收-->
+    <bean id="multiThreadLotteryTypeInstanceOrderDrawRunnable" class="com.lottery.draw.prize.thread.MultiThreadLotteryTypeInstanceOrderDrawRunnable"/>
+    <bean id="lotteryTypeInstanceOrderContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="multiThreadLotteryTypeInstanceOrderDrawRunnable" />
+        <constructor-arg index="1" value="算奖回收线程" />
+        <property name="beforeRunWaitTime" value="10000" />
+    </bean>
+
+
+    <!--开奖中订单回收 -->
+    <bean id="recoveryPrizingLoteryOrderRunnable" class="com.lottery.draw.prize.thread.RecoveryPrizingLoteryOrderRunnable"></bean>
+    <bean id="recoveryPrizingLoteryOrderContainer" class="com.lottery.common.thread.ThreadContainer"
+          init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="recoveryPrizingLoteryOrderRunnable" />
+        <constructor-arg index="1" value="开奖中订单回收线程" />
+        <property name="beforeRunWaitTime" value="15000"/>
+    </bean>
+</beans>

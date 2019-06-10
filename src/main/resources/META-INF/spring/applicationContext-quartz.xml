@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <import resource="classpath*:META-INF/spring/scheduler/*.xml"/>
+	<bean id="startQuertz" lazy-init="false" autowire="no"	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="zqMatchTimer"/>
+				<ref bean="lqMatchTimer"/>
+				<ref bean="jcspTimer"/>
+				<ref bean="bdSpTimer"/> 
+				<ref bean="recoverCouponTimer"/> 
+			</list>
+		</property>
+		
+	</bean>
+<!-- 按天统计 -->
+<!--<bean id="userRebateDayStatisticsRunnbale" class="com.lottery.scheduler.statistic.UserRebateDayStatisticsRunnable"></bean>-->
+<!--<bean id="userRebateDayStatisticsContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">-->
+		<!--<constructor-arg index="0" ref="userRebateDayStatisticsRunnbale" />-->
+		<!--<constructor-arg index="1" value="用户购彩按天统计"/>-->
+		<!--<property name="beforeRunWaitTime" value="11000" />-->
+	<!--</bean>-->
+
+<!-- 按月统计 -->
+<!--<bean id="userRebateMonthStatisticsRunnbale" class="com.lottery.scheduler.statistic.UserRebateMonthStatisticsRunnable"></bean>-->
+
+<!--<bean id="userRebateMonthStatisticsContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">-->
+		<!--<constructor-arg index="0" ref="userRebateMonthStatisticsRunnbale" />-->
+		<!--<constructor-arg index="1" value="用户购彩按月统计"/>-->
+		<!--<property name="beforeRunWaitTime" value="12000" />-->
+	<!--</bean>-->
+</beans>

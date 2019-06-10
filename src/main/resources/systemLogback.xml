@@ -1,0 +1,65 @@
+<included scan="true">
+<appender name="apachefile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<File>${catalina.home}/logs/system/apache.log</File>
+	<encoder>
+		<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+		<charset>UTF-8</charset>
+	</encoder>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<fileNamePattern>${catalina.home}/logs/system/apache.log.%d{yyyy-MM-dd}</fileNamePattern>
+		<maxHistory>1</maxHistory>
+	</rollingPolicy>
+
+	<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<maxFileSize>20MB</maxFileSize>
+	</triggeringPolicy>
+</appender>
+
+
+<appender name="springfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<File>${catalina.home}/logs/system/spring.log</File>
+<encoder>
+	<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+	<charset>UTF-8</charset>
+</encoder>
+<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	<fileNamePattern>${catalina.home}/logs/system/spring.log.%d{yyyy-MM-dd}</fileNamePattern>
+	<maxHistory>1</maxHistory>
+</rollingPolicy>
+
+<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+	<maxFileSize>20MB</maxFileSize>
+</triggeringPolicy>
+</appender>
+
+
+<appender name="memcachefile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<File>${catalina.home}/logs/system/memcache.log</File>
+<encoder>
+	<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{180}.%method - %msg%n</pattern>
+	<charset>UTF-8</charset>
+</encoder>
+<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	<fileNamePattern>${catalina.home}/logs/system/memcache.log.%d{yyyy-MM-dd}</fileNamePattern>
+	<maxHistory>1</maxHistory>
+</rollingPolicy>
+
+<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+	<maxFileSize>20MB</maxFileSize>
+</triggeringPolicy>
+</appender>
+<logger name="org.springframework" level="INFO" additivity="false">
+<appender-ref ref="springfile"/>
+</logger>
+
+<logger name="net.rubyeye" level="INFO" additivity="false">
+<appender-ref ref="memcachefile"/>
+</logger>
+<logger name="com.google" level="INFO" additivity="false">
+<appender-ref ref="memcachefile"/>
+</logger>
+
+<logger name="org.apache" level="INFO" additivity="false">
+<appender-ref ref="apachefile" />
+</logger>
+</included>

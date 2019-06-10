@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" >
+       
+	    
+	    <!-- 查票 -->
+	    <!-- 查票线程 -->
+	    <context:component-scan base-package="com.lottery.ticket.checker"/>
+        <context:component-scan base-package="com.lottery.listener.check"/>
+	   
+	    <!--<import resource="classpath*:META-INF/spring/check/bean-vender-checker-zch.xml"/>-->
+	    <import resource="classpath*:META-INF/spring/check/bean-vender-checker-huay.xml"/>
+        <!--<import resource="classpath*:META-INF/spring/check/bean-vender-checker-qh.xml"/>-->
+        <!--<import resource="classpath*:META-INF/spring/check/bean-vender-checker-anrui.xml"/>-->
+        <import resource="classpath*:META-INF/spring/check/bean-vender-checker-gzcp.xml"/>
+        <import resource="classpath*:META-INF/spring/check/bean-vender-checker-owner.xml"/>
+        <import resource="classpath*:META-INF/spring/check/bean-vender-checker-gx.xml"/>
+	    <import resource="classpath*:META-INF/spring/check/bean-vender-checker-huai.xml"/>
+	    <import resource="classpath*:META-INF/spring/check/bean-vender-checker-zy.xml"/>
+
+       <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-jinnuo.xml"/>-->
+        <!-- <import resource="classpath*:META-INF/spring/check/bean-vender-checker-jydp.xml"/>-->
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-shcp.xml"/>-->
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-gaode.xml"/>-->
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-huancai.xml"/>
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-ruiyingi.xml"/>-->
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-lt.xml"/>-->
+        <!--  <import resource="classpath*:META-INF/spring/check/bean-vender-checker-sjz.xml"/>-->
+    <!--手动检票 -->
+    <bean id="handcheckRoute" class="com.lottery.listener.check.TicketCheckRouteBuilder"/>
+    <camelContext id="ticketcheckCamelContenxt" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="handcheckRoute"/>
+    </camelContext>
+
+
+        <!-- 检票 -->
+
+        <bean id="orderCheckRouteBuilder" class="com.lottery.listener.check.OrderCheckRouteBuilder">
+
+        </bean>
+
+    <camelContext id="orderCheckCamelContext" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="orderCheckRouteBuilder"/>
+    </camelContext>
+
+        <!--高频检票 -->
+
+    <bean id="gaopinorderCheckRouteBuilder" class="com.lottery.listener.check.HighFrequencyOrderCheckRouteBuilder">
+
+    </bean>
+
+    <camelContext id="gaopinorderCheckCamelContext" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="gaopinorderCheckRouteBuilder"/>
+    </camelContext>
+
+
+     <!--扣款 -->
+
+    <bean id="orderdeductRouteBuilder" class="com.lottery.listener.check.OrderDeductRouteBuilder"/>
+    <camelContext id="orderdeductCamelContext" xmlns="http://camel.apache.org/schema/spring">
+        <routeBuilder ref="orderdeductRouteBuilder"/>
+    </camelContext>
+
+
+    <!-- 票超时回收-->
+	    
+	    <bean id="ticketTimeOutHandlerRunnable" class="com.lottery.ticket.checker.thread.timeout.TicketTimeOutHandler"/>
+	     <bean id="ticketTimeOutHandlerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		    <constructor-arg index="0" ref="ticketTimeOutHandlerRunnable" />
+			<constructor-arg index="1" value="票超时回收线程" />
+			<property name="beforeRunWaitTime" value="20000" />
+	    </bean> 
+	    
+	  <!--   <bean class="com.lottery.listener.chase.LotteryChaseMessageListenerContainer">
+	    <property name="connectionFactory" ref="pooledConnectionFactory"/>
+	   <property name="messageListener">
+	      <bean class="com.lottery.listener.chase.LotteryChaseMessageListener"></bean>
+	   </property> 
+	   
+	    </bean> -->
+	    
+	    
+	     <!--  <camelContext id="camel5" xmlns="http://camel.apache.org/schema/spring">
+    <routeBuilder ref="myBuilder" />    
+  </camelContext>
+   
+  <bean id="myBuilder" class="org.apache.camel.spring.example.test1.MyRouteBuilder"/>
+	    -->
+	    
+	    <!-- http://camel.apache.org/how-do-i-configure-endpoints.html  -->
+</beans>

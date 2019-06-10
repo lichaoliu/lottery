@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" >
+
+    
+    
+	    <bean id="zchOrderCheckerRunnable" class="com.lottery.ticket.checker.thread.CommonticketCheckerRunnable">
+	      <!--  <property name="lotteryList">
+	       <list>
+	          <ref bean="cqssc"/>
+	          <ref bean="sd11x5"/>
+	          <ref bean="ssq"/>
+	          <ref bean="f3d"/>
+	          <ref bean="qlc"/>
+	          <ref bean="pl3"/>
+      		  <ref bean="pl5"/>
+      		  <ref bean="qxc"/>
+      		  <ref bean="cjdlt"/>
+      		  <ref bean="jclq_sf"/>
+	          <ref bean="jclq_rfsf"/>
+	          <ref bean="jclq_sfc"/>
+	          <ref bean="jclq_dxf"/>
+	          <ref bean="jczq_bf"/>
+	          <ref bean="jclq_hhgg"/>
+	          <ref bean="jczq_spf"/>
+	          <ref bean="jczq_jqs"/>
+	          <ref bean="jczq_bqc"/>
+	          <ref bean="jczq_spf_wrq"/>
+	          <ref bean="jczq_hhgg"/>
+	          <ref bean="zc_rjc"/>
+	          <ref bean="zc_sfc"/>
+	          <ref bean="zc_jqc"/>
+	          <ref bean="zc_bqc"/>
+	       </list>
+	     </property> -->
+	     
+	     <property name="terminalType" ref="zch"/>
+	    </bean>
+	    
+	     <bean id="zchCheckerContainer" class="com.lottery.common.thread.ThreadContainer" init-method="start" destroy-method="stop">
+		    <constructor-arg index="0" ref="zchOrderCheckerRunnable" />
+			<constructor-arg index="1" value="中彩汇查票线程" />
+			<property name="beforeRunWaitTime" value="10000" />
+	    </bean>
+	   
+</beans>
